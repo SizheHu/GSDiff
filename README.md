@@ -6,4 +6,6 @@ unconstrained params: https://drive.google.com/file/d/15gM0GtW2GwHmlpz0r-rpvo-k-
 
 topology-constrained params: https://drive.google.com/file/d/1pk7SmvLZ8ON3OUL3SNxPRu73ndVKru0z/view?usp=sharing
 
+boundary-constrained params: https://drive.google.com/file/d/1XMU5zxXoxiXg3LB9rlluWOX9BT2YIGdK/view?usp=sharing
+
 The code and data haven't been fully released yet.
