@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/user00/HSZ/house_diffusion-main')
-sys.path.append('/home/user00/HSZ/house_diffusion-main/datasets')
-sys.path.append('/home/user00/HSZ/house_diffusion-main/house_diffusion')
+sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
+sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
 
 
 
@@ -10,8 +10,8 @@ import torch
 from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 from datasets.rplang_edge_semantics_simplified_78_10_prerunCNN import RPlanGEdgeSemanSimplified_78_10_prerunCNN
-from house_diffusion.boundary_78_10 import BoundaryModel
-from house_diffusion.utils import *
+from gsdiff_boun.boundary_78_10 import BoundaryModel
+from gsdiff_boun.utils import *
 from itertools import cycle
 import torch.nn.functional as F
 import numpy as np
@@ -20,14 +20,6 @@ import os
 
 batch_size = 1
 device = 'cuda:3'
-# device = 'cpu'
-
-'''record description'''
-description = '''
-我们把整个数据集在CNN上运行一遍，把chw=(256, 64, 64) (512, 32, 32) (1024, 16, 16)的特征图直接以.npy的形式存起来
-到时候训练扩散模型的时候就不用费显存加载CNN和原始图像了
-至于测试，调小batch size也未尝不可
-'''
 
 
 '''Neural Network'''
