@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/user00/HSZ/house_diffusion-main')
-sys.path.append('/home/user00/HSZ/house_diffusion-main/datasets')
-sys.path.append('/home/user00/HSZ/house_diffusion-main/house_diffusion')
+sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
+sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
 
 
 
@@ -10,8 +10,8 @@ import torch
 from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 from datasets.rplang_edge_semantics_simplified_78_10 import RPlanGEdgeSemanSimplified_78_10
-from house_diffusion.boundary_78_10 import BoundaryModel
-from house_diffusion.utils import *
+from gsdiff_boun.boundary_78_10 import BoundaryModel
+from gsdiff_boun.utils import *
 from itertools import cycle
 import torch.nn.functional as F
 
