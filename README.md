@@ -8,4 +8,6 @@ topology-constrained params: https://drive.google.com/file/d/1pk7SmvLZ8ON3OUL3SN
 
 boundary-constrained params: https://drive.google.com/file/d/1XMU5zxXoxiXg3LB9rlluWOX9BT2YIGdK/view?usp=sharing
 
+boundary-autoencoder CNN params: https://drive.google.com/file/d/1l6QRpfX5Jtucg3R995HajlwRG8SewUJW/view?usp=sharing
+
 The code and data haven't been fully released yet.
