@@ -10,4 +10,6 @@ boundary-constrained params: https://drive.google.com/file/d/1XMU5zxXoxiXg3LB9rl
 
 boundary-autoencoder CNN params: https://drive.google.com/file/d/1l6QRpfX5Jtucg3R995HajlwRG8SewUJW/view?usp=sharing
 
+topology-autoencoder Transformer params: https://drive.google.com/file/d/1tExX8LdrFpJfBQH5y2emC6BltBwf9tHx/view?usp=sharing
+
 The code and data haven't been fully released yet.
