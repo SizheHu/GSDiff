@@ -12,4 +12,4 @@ boundary-autoencoder CNN params: https://drive.google.com/file/d/1l6QRpfX5Jtucg3
 
 topology-autoencoder Transformer params: https://drive.google.com/file/d/1tExX8LdrFpJfBQH5y2emC6BltBwf9tHx/view?usp=sharing
 
-The code and data haven't been fully released yet.
+The data haven't been released yet.
