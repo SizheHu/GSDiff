@@ -3,7 +3,7 @@ sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
 
-
+'''note this maps needs about 500GB disk space'''
 
 import math
 import torch
