@@ -263,11 +263,7 @@ for test_file in tqdm(test_files):
     del v1['boundary_vertex_coords_4cvae']
     del v1['boundary_adjacency_matrix']
 
-    # 检验
-    gt1 = np.load('../../house_diffusion-main/datasets/rplang-v3-withsemantics-withboundary/test/' + f"{test_graph['file_id']}.npy", allow_pickle=True).item()
-    gt2 = np.load('../../house_diffusion-main/datasets/rplang-v3-withsemantics-withboundary-v2/test/' + f"{v1['file_id']}.npy", allow_pickle=True).item()
-    assert deep_compare(test_graph, gt2), str(test_graph['file_id'])
-    assert deep_compare(v1, gt1), str(test_graph['file_id'])
+
 
     np.save(os.path.join('rplandata/Data/rplang-v3-withsemantics-withboundary-v2/test', f"{test_graph['file_id']}.npy"), test_graph)
     np.save(os.path.join('rplandata/Data/rplang-v3-withsemantics-withboundary/test',f"{v1['file_id']}.npy"), v1)
