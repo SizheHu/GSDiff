@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+'''This is a simple Transformer for edge prediction without our random self-supervision strategy.
+Only used for some node generation model training-validation process, build graph and rasterize to calculate FID/KID during validation'''
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, heads, d_model):
