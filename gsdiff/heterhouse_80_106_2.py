@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+'''This is the node generation transformer used for topology constraints.'''
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, heads, d_model):
