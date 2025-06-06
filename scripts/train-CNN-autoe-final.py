@@ -1,17 +1,19 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
+sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
 
-
+'''This script is the third step of training a CNN. 
+It loads the trained model from the second step (structure-78-11) and fine-tunes it on real RPLAN boundary images.
+The resulting model is used as the input boundary condition encoding for the node and edge models.'''
 
 import math
 import torch
 from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 from datasets.rplang_edge_semantics_simplified_78_10 import RPlanGEdgeSemanSimplified_78_10
-from gsdiff_boun.boundary_78_10 import BoundaryModel
-from gsdiff_boun.utils import *
+from gsdiff.boundary_78_10 import BoundaryModel
+from gsdiff.utils import *
 from itertools import cycle
 import torch.nn.functional as F
 
@@ -19,38 +21,12 @@ lr = 1e-5
 weight_decay = 0
 total_steps = float("inf") # 200000
 batch_size = 16
-device = 'cuda:3'
-# device = 'cpu'
+device = 'cuda:0' # Modify it yourself
 
 '''create output_dir'''
 output_dir = 'outputs/structure-78-12/'
 os.makedirs(output_dir, exist_ok=False)
-'''record description'''
-description = '''
-训练用于气泡图节点嵌入和角点数估计的CVAE（一阶段之前的第0阶段）中的图嵌入网络。
-我们在2024年8月1日重新训练，层数还是12层，维数从512降为256
 
-78：和图嵌入网络相同架构的边界网络
-我们尝试两个版本：
-78-1 训练时随机生成多边形
-78-2 只用训练集多边形训练
-78-3 78-1的24层版本
-78-4 78-2的24层版本
-
-78-5 78-3添加坐标的辅助loss：同时从多种进制上学习 
-边缘则使用可达矩阵和节点度数作为罚函数
-我们使用SGD，先在随机数据上训练，当模型连续20轮后本应退出时，我们在78-5-2上加载模型，使用相同的配置在训练集上微调。
-
-
-78-8 我们引入CNN，获得多尺度特征并在编码器中做交叉注意力（取transformer）
-78-9 78-8的节点可学习（取CNN）
-78-10 直接把神经网络换成UNet
-78-11 黑色随机预训练
-78-12 1e-5 interval=100 微调
-'''
-file_description = open(output_dir + 'file_description.txt', mode='w')
-file_description.write(description)
-file_description.close()
 
 '''Neural Network'''
 model = BoundaryModel().to(device)
