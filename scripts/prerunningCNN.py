@@ -3,7 +3,9 @@ sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
 
-'''note this maps needs about 500GB disk space'''
+'''We found that calculating feature maps through CNN in real time consumes too much GPU memory, 
+so after training CNN, the feature maps corresponding to the boundary images of the entire dataset are storaged in disk for reading.'''
+'''Note: this script needs about 500GB disk space.'''
 
 import math
 import torch
@@ -19,16 +21,16 @@ import os
 
 
 batch_size = 1
-device = 'cuda:3'
+device = 'cuda:0' # Modify it yourself
 
 
 '''Neural Network'''
 pretrained_encoder = BoundaryModel().to(device)
 pretrained_encoder.load_state_dict(torch.load('outputs/structure-78-12/model_stage0_best_006700.pt', map_location=device))
-print('预训练边界CNN参数量：', sum(p.numel() for p in pretrained_encoder.parameters()))
+print('Pre-trained boundary CNN parameters：', sum(p.numel() for p in pretrained_encoder.parameters()))
 for param in pretrained_encoder.parameters():
     param.requires_grad = False
-print('已冻结CNN')
+print('CNN has been frozen')
 
 '''Data'''
 dataset_train = RPlanGEdgeSemanSimplified_78_10_prerunCNN('train', random_training_data=False)
@@ -85,9 +87,7 @@ while step < len(dataset_train): # 65763
     feat[16] = e5.cpu().numpy()
     # print('e5', e5.shape) torch.Size([1, 1024, 16, 16])
 
-
-    
-    # 保存NumPy数组为.npy格式的文件
+    # Save feature map
     np.save(os.path.join('../datasets/prerunning_cnn_featuremaps', str(file_id.item()) + '.npy'), feat)
     
     
@@ -98,12 +98,6 @@ while step < len(dataset_train): # 65763
 
 
     print('step: ', step, e5.shape, len(feat), feat[32].shape)
-
-
-
-
-
-
 
 
 
@@ -149,7 +143,7 @@ while step < len(dataset_val): # 3000
     # print('e5', e5.shape) torch.Size([1, 1024, 16, 16])
 
     
-    # 保存NumPy数组为.npy格式的文件
+    # Save feature map
     np.save(os.path.join('../datasets/prerunning_cnn_featuremaps', str(file_id.item()) + '.npy'), feat)
     
     
@@ -206,7 +200,7 @@ while step < len(dataset_test): # 3000
     # print('e5', e5.shape) torch.Size([1, 1024, 16, 16])
 
     
-    # 保存NumPy数组为.npy格式的文件
+    # Save feature map
     np.save(os.path.join('../datasets/prerunning_cnn_featuremaps', str(file_id.item()) + '.npy'), feat)
     
     
