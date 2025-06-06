@@ -35,13 +35,13 @@ model.load_state_dict(torch.load('outputs/structure-78-11/model005000.pt', map_l
 print('total params:', sum(p.numel() for p in model.parameters()))
 
 '''Data'''
-# dataset_train = RPlanGEdgeSemanSimplified_78_10('train', random_training_data=False)
-dataset_train = RPlanGEdgeSemanSimplified_78_11('train', random_training_data=False)
+# dataset_train = RPlanGEdgeSemanSimplified_78_10('train', random_training_data=False)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
+dataset_train = RPlanGEdgeSemanSimplified_78_11('train', random_training_data=False)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
 dataloader_train = DataLoader(dataset_train, batch_size=batch_size, shuffle=True, num_workers=0,
                         drop_last=True, pin_memory=False)  # try different num_workers to be faster
 dataloader_train_iter = iter(cycle(dataloader_train))
-# dataset_val = RPlanGEdgeSemanSimplified_78_10('val', random_training_data=False)
-dataset_val = RPlanGEdgeSemanSimplified_78_11('val', random_training_data=False)
+# dataset_val = RPlanGEdgeSemanSimplified_78_10('val', random_training_data=False)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
+dataset_val = RPlanGEdgeSemanSimplified_78_11('val', random_training_data=False)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
 dataloader_val = DataLoader(dataset_val, batch_size=1, shuffle=False, num_workers=0,
                         drop_last=False, pin_memory=False)  # try different num_workers to be faster
 dataloader_val_iter = iter(cycle(dataloader_val))
