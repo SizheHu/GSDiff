@@ -29,31 +29,6 @@ device = 'cuda:1'
 '''create output_dir'''
 output_dir = 'outputs/structure-78-11/'
 os.makedirs(output_dir, exist_ok=False)
-'''record description'''
-description = '''
-训练用于气泡图节点嵌入和角点数估计的CVAE（一阶段之前的第0阶段）中的图嵌入网络。
-我们在2024年8月1日重新训练，层数还是12层，维数从512降为256
-
-78：和图嵌入网络相同架构的边界网络
-我们尝试两个版本：
-78-1 训练时随机生成多边形
-78-2 只用训练集多边形训练
-78-3 78-1的24层版本
-78-4 78-2的24层版本
-
-78-5 78-3添加坐标的辅助loss：同时从多种进制上学习 
-边缘则使用可达矩阵和节点度数作为罚函数
-我们使用SGD，先在随机数据上训练，当模型连续20轮后本应退出时，我们在78-5-2上加载模型，使用相同的配置在训练集上微调。
-
-
-78-8 我们引入CNN，获得多尺度特征并在编码器中做交叉注意力（取transformer）
-78-9 78-8的节点可学习（取CNN）
-78-10 直接把神经网络换成UNet
-78-11 黑色随机预训练
-'''
-file_description = open(output_dir + 'file_description.txt', mode='w')
-file_description.write(description)
-file_description.close()
 
 '''Neural Network'''
 model = BoundaryModel().to(device)
@@ -61,11 +36,13 @@ model.load_state_dict(torch.load('outputs/structure-78-10/model089000.pt', map_l
 print('total params:', sum(p.numel() for p in model.parameters()))
 
 '''Data'''
-dataset_train = RPlanGEdgeSemanSimplified_78_10('train', random_training_data=True)
+# dataset_train = RPlanGEdgeSemanSimplified_78_10('train', random_training_data=True)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
+dataset_train = RPlanGEdgeSemanSimplified_78_11('train', random_training_data=True)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
 dataloader_train = DataLoader(dataset_train, batch_size=batch_size, shuffle=True, num_workers=0,
                         drop_last=True, pin_memory=False)  # try different num_workers to be faster
 dataloader_train_iter = iter(cycle(dataloader_train))
-dataset_val = RPlanGEdgeSemanSimplified_78_10('val', random_training_data=True)
+# dataset_val = RPlanGEdgeSemanSimplified_78_10('val', random_training_data=True)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
+dataset_val = RPlanGEdgeSemanSimplified_78_11('val', random_training_data=True)# This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
 dataloader_val = DataLoader(dataset_val, batch_size=1, shuffle=False, num_workers=0,
                         drop_last=False, pin_memory=False)  # try different num_workers to be faster
 dataloader_val_iter = iter(cycle(dataloader_val))
