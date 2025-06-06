@@ -121,8 +121,8 @@ while step < total_steps:
     if step % interval == 0:
         output_dir_val = output_dir + 'val_' + f'{step:07d}'
         if os.path.exists(output_dir_val):
-            shutil.rmtree(output_dir_val)  # 删除路径
-        os.makedirs(output_dir_val)  # 创建路径
+            shutil.rmtree(output_dir_val)
+        os.makedirs(output_dir_val)
         
         model.eval()
         val_number = len(dataset_val) # 3000
