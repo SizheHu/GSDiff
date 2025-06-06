@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import torch.utils.data
 import torch
 
+'''This is the CNN for boundary encoding and decoding'''
 
 class FrozenBatchNorm2d(torch.nn.Module):
     def __init__(self, n, eps=1e-5):
