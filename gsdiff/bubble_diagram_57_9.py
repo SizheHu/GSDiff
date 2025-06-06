@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+'''This is the Transformer used for topology encoding and decoding'''
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, heads, d_model):
