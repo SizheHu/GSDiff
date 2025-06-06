@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff-main')
-sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
+sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
 
 '''We found that calculating feature maps through CNN in real time consumes too much GPU memory, 
 so after training CNN, the feature maps corresponding to the boundary images of the entire dataset are storaged in disk for reading.'''
