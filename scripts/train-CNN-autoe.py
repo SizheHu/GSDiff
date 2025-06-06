@@ -3,7 +3,7 @@ sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
 
-
+'''This script is the first step in training the CNN, which is pre-trained on random colored polygons.'''
 
 import math
 import torch
