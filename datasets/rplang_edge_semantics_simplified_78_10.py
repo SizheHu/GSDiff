@@ -109,10 +109,16 @@ class RPlanGEdgeSemanSimplified_78_10(Dataset):
         draw = ImageDraw.Draw(image)
         
         # 定义线条颜色和宽度
+        # lines_info = [
+        #     {'width': 7, 'color': "black"},
+        #     {'width': 5, 'color': "black"},
+        #     {'width': 3, 'color': "black"},
+        #     {'width': 1, 'color': "black"}
+        # ]
         lines_info = [
-            {'width': 7, 'color': "black"},
-            {'width': 5, 'color': "black"},
-            {'width': 3, 'color': "black"},
+            {'width': 7, 'color': "green"},
+            {'width': 5, 'color': "blue"},
+            {'width': 3, 'color': "red"},
             {'width': 1, 'color': "black"}
         ]
         
