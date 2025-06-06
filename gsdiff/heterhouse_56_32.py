@@ -5,9 +5,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-"""
-Various positional encodings for the transformer.
-"""
+
+'''This is the boundary-constrained edge prediction Transformer with the random self-supervision strategy.'''
+
+
 class PositionEmbeddingSine(nn.Module):
     """
     This is a more standard version of the position embedding, very similar to the one
