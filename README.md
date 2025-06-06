@@ -21,7 +21,7 @@ Official implementation of the AAAI 2025 paper: "GSDiff: Synthesizing Vector Flo
    python rplan-process6.py
    python rplan-process7.py
    ```
-   - After completion, 2 directories `rplang-v3-withsemantics-withboundary` and `rplang-v3-withsemantics-withboundary-v2`, will appear under `datasets/rplandata/Data`, each containing the 71,763 files.
+   - After completion, 2 directories `rplang-v3-withsemantics-withboundary` and `rplang-v3-withsemantics-withboundary-v2`, will appear under `datasets/rplandata/Data`, each containing 71,763 files.
 
 5. Run the following scripts to obtain topology graphs:
    ```bash
