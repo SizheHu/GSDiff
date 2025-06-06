@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff-main')
-sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
+sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
 
 '''This script is the second step of training CNN. 
 It loads the training model of the first step (structure-78-10) and continues training on random black polygons.
@@ -23,8 +23,7 @@ lr = 1e-4
 weight_decay = 0
 total_steps = float("inf") # 200000
 batch_size = 16
-device = 'cuda:1'
-# device = 'cpu'
+device = 'cuda:1' # Modify it yourself
 
 '''create output_dir'''
 output_dir = 'outputs/structure-78-11/'
