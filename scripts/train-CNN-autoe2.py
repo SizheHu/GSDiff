@@ -3,7 +3,10 @@ sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
 sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
 
-
+'''This script is the second step of training CNN. 
+It loads the training model of the first step (structure-78-10) and continues training on random black polygons.
+The difference between it and the model of the first step is that the training data of the first step is random colored polygons, 
+while this step is random black polygons (closer to the real RPLAN boundary image)'''
 
 import math
 import torch
