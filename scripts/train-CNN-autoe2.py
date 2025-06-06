@@ -14,8 +14,8 @@ from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 # from datasets.rplang_edge_semantics_simplified_78_10 import RPlanGEdgeSemanSimplified_78_10 # This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
 from datasets.rplang_edge_semantics_simplified_78_11 import RPlanGEdgeSemanSimplified_78_11 # This part is slightly different from what I wrote at that time, but the version I revised now should be my actual practice at that time.
-from gsdiff_boun.boundary_78_10 import BoundaryModel
-from gsdiff_boun.utils import *
+from gsdiff.boundary_78_10 import BoundaryModel
+from gsdiff.utils import *
 from itertools import cycle
 import torch.nn.functional as F
 
