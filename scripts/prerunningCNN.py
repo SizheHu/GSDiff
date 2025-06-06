@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
+sys.path.append('/home/user00/HSZ/gsdiff-main')
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
 
 '''We found that calculating feature maps through CNN in real time consumes too much GPU memory, 
 so after training CNN, the feature maps corresponding to the boundary images of the entire dataset are storaged in disk for reading.'''
@@ -12,8 +12,8 @@ import torch
 from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 from datasets.rplang_edge_semantics_simplified_78_10_prerunCNN import RPlanGEdgeSemanSimplified_78_10_prerunCNN
-from gsdiff_boun.boundary_78_10 import BoundaryModel
-from gsdiff_boun.utils import *
+from gsdiff.boundary_78_10 import BoundaryModel
+from gsdiff.utils import *
 from itertools import cycle
 import torch.nn.functional as F
 import numpy as np
