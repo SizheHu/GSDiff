@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+'''This is the Transformer for edge prediction with our random self-supervision strategy.'''
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, heads, d_model):
