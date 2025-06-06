@@ -3,7 +3,7 @@ sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
 sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
 sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
 
-'''This script is the third step of training a CNN. 
+'''This script is the third step of training the CNN. 
 It loads the trained model from the second step (structure-78-11) and fine-tunes it on real RPLAN boundary images.
 The resulting model is used as the input boundary condition encoding for the node and edge models.'''
 
