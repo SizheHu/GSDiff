@@ -3,9 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-"""
-Various positional encodings for the transformer.
-"""
+'''This is the node generation transformer used for boundary constraints.'''
+
 class PositionEmbeddingSine(nn.Module):
     """
     This is a more standard version of the position embedding, very similar to the one
