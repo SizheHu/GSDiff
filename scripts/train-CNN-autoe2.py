@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main')
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff_boun-main/gsdiff_boun')
+sys.path.append('/home/user00/HSZ/gsdiff-main')
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
 
 '''This script is the second step of training CNN. 
 It loads the training model of the first step (structure-78-10) and continues training on random black polygons.
