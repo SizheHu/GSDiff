@@ -36,7 +36,6 @@ Alternatively, you can use `get_cycle_basis_and_semantic_3_semansimplified` inst
 
 
 
-
 # params (place in the 'outputs' folder)
 unconstrained params: https://drive.google.com/file/d/15gM0GtW2GwHmlpz0r-rpvo-k-BlNy_gu/view?usp=sharing
 
