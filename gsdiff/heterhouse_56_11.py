@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+'''This is the Transformer for the 2nd-stage "edge prediction". It does not include our random self-supervision strategy, but only a basic edge prediction Transformer. 
+Some of our node generation models use this basic edge Transformer to construct images and calculate FID/KID during validation.'''
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, heads, d_model):
