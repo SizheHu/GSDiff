@@ -427,23 +427,23 @@ while step < total_steps:
     y_coords_uns = y_coords.unsqueeze(2)
     distance_matrix_y = torch.abs(y_coords_uns - y_coords_uns.transpose(1, 2))
 
-    # 设置无穷大和 NaN 值为99999
+    # Set infinity and NaN values ​​to 99999
     distance_matrix_x[torch.isinf(distance_matrix_x) | torch.isnan(distance_matrix_x)] = 99999
     distance_matrix_y[torch.isinf(distance_matrix_y) | torch.isnan(distance_matrix_y)] = 99999
-    # 对角线使用掩码填充99999
+    # Diagonal lines are filled with mask 99999
     distance_matrix_x[(torch.eye(53).unsqueeze(0) == 1).to(device).expand(distance_matrix_x.size(0), 53, 53)] = 99999
     distance_matrix_y[(torch.eye(53).unsqueeze(0) == 1).to(device).expand(distance_matrix_y.size(0), 53, 53)] = 99999
     # print(distance_matrix_x)
     # print(distance_matrix_y)
-    # 计算每个节点 i 的所有 x, y 轴向距离的最小值
+    # Calculate the minimum of all x, y axial distances for each node i
     min_values_x, _ = torch.min(distance_matrix_x, dim=2)
     min_values_y, _ = torch.min(distance_matrix_y, dim=2)
     # print(min_values_x.shape) # (bs, 53)
     # print(min_values_y.shape) # (bs, 53)
-    # LACE原文：求同一个节点i对其他节点（53）的所有方向（2）中距离（106）最小的
+    # Find the node i with the smallest distance (106) to other nodes (53) in all directions (2).
     min_values = torch.stack((min_values_x, min_values_y), dim=2)
     min_values, _ = torch.min(min_values, dim=2)
-    # print(min_values[29]) # (bs, 53) 包含99999,那代表节点为padding节点
+    # print(min_values[29]) # (bs, 53) contains 99999, which means the node is a padding node
     min_values_unnorm = torch.where(min_values != 99999, min_values * 128, torch.tensor(0.0, dtype=min_values.dtype, device=device))
     # print(min_values_unnorm[29])
     min_values_bin_masked = map_to_binary(min_values_unnorm)
@@ -454,17 +454,13 @@ while step < total_steps:
     # print(min_values_bin_masked[29].shape)
 
 
-
-
-
-
-    # 对于每个样本，将非99999的元素套上g=-2log(1-(0.5-eps)x)
-    # 应用函数 -2log(1-0.5x) 到非99999的元素
-    # 注意：确保输入到log的值是正数，即1-0.5x > 0 # 这个x是距离所以一定大于等于0, 因为归一化L1距离一定小于等于2
-    # 99999这里会直接变成0，没有影响
-    # 再乘以时间权重
-    # 12位按位回归，最大值是12
-    # 不能干扰了主loss，无限进制下是[0, 255]->[0, 2]的距离，二进制这里变成了[0, 12]，我们给这个除以128，以与无限进制下的距离对齐
+    # For each sample, put the non-99999 elements on g=-2log(1-(0.5-eps)x)
+    # Apply the function -2log(1-0.5x) to the non-99999 elements
+    # Note: Make sure the value entered into log is a positive number, i.e. 1-0.5x > 0 # This x is the distance so it must be greater than or equal to 0, because the normalized L1 distance must be less than or equal to 2
+    # 99999 will directly become 0 here, no effect
+    # Multiply by the time weight
+    # 12-bit bitwise regression, the maximum value is 12
+    # It cannot interfere with the main loss. The distance in the infinite base is [0, 255]->[0, 2], which becomes [0, 12] in binary. We divide this by 128 to align with the distance in the infinite base.
     masked_tensor_bin = ((-12 * torch.log(1 - (1 / 12 - 1e-8) * min_values_bin_masked.sum(2)).sum(1) * time_weight[
         t]).sum() / 128) / batch_size
     masked_tensor_four = ((-18 * torch.log(1 - (1 / 18 - 1e-8) * min_values_four_masked.sum(2)).sum(1) * time_weight[
@@ -475,11 +471,9 @@ while step < total_steps:
         t]).sum() / 128) / batch_size
     masked_tensor_inf = (torch.where(min_values != 99999, -2 * torch.log(1 - (0.5 - 1e-8) * min_values),
                                 torch.tensor(0.0, dtype=min_values.dtype, device=device)).sum(1) * time_weight[t]).sum() / batch_size
-    # 对结果求和
+    # Sum the results
     local_aligned_loss = masked_tensor_bin + masked_tensor_four + masked_tensor_eight + masked_tensor_sxt + masked_tensor_inf
 
-
-    # 加权
     corner_number = torch.ones((batch_size,), device=device) * 53
     corners_loss_masked_avgpergraph1 = corners_loss_masked1.sum(dim=[1, 2]) / corner_number
     # corners_loss_masked_avgpergraph2 = corners_loss_masked2.sum(dim=[1, 2]) / corner_number
@@ -539,53 +533,19 @@ while step < total_steps:
             results_stage1_val['results_corners_' + str(k_val)] = []
             results_stage1_val['results_semantics_' + str(k_val)] = []
             results_stage1_val['results_corners_numbers_' + str(k_val)] = []
-        print('验证集一阶段开始')
+        print('The first phase of the validation set begins')
         if len(dataset_val) % batch_size_val == 0:
             batch_numbers = len(dataset_val) // batch_size_val
         else:
             batch_numbers = len(dataset_val) // batch_size_val + 1
-        for batch_count in tqdm(range(batch_numbers)):
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
+        for batch_count in tqdm(range(batch_numbers)):            
             # feat_64_val_batch, feat_32_val_batch, feat_16_val_batch, corners_withsemantics_0_val_batch, global_attn_matrix_val_batch, corners_padding_mask_val_batch = next(dataloader_val_iter)
             # feat_32_val_batch, feat_16_val_batch, corners_withsemantics_0_val_batch, global_attn_matrix_val_batch, corners_padding_mask_val_batch = next(dataloader_val_iter)
             feat_16_val_batch, corners_withsemantics_0_val_batch, global_attn_matrix_val_batch, corners_padding_mask_val_batch = next(dataloader_val_iter)
 
-
-
-
-
-
-
-
-
-
-
             # feat_64_val_batch = feat_64_val_batch.to(device).float() # (bs, c=256, h=64, w=64)
             # feat_32_val_batch = feat_32_val_batch.to(device).float() # (bs, c=512, h=32, w=32)
             feat_16_val_batch = feat_16_val_batch.to(device).float() # (bs, c=1024, h=16, w=16)
-
-
-
-
-            
-
-
-
             
             corners_withsemantics_0_val_batch = corners_withsemantics_0_val_batch.to(device).clamp(-1, 1)
             global_attn_matrix_val_batch = global_attn_matrix_val_batch.to(device)
@@ -607,31 +567,9 @@ while step < total_steps:
                 with torch.no_grad():
                     '''model: predicts corners_noise'''
 
-
-
-
-
-
-
-
-                    
                     # output_corners_withsemantics1_val_batch, output_corners_withsemantics2_val_batch = model(corners_withsemantics_t_val_batch, global_attn_matrix_val_batch, t_val, feat_64_val_batch, feat_32_val_batch, feat_16_val_batch)
                     # output_corners_withsemantics1_val_batch, output_corners_withsemantics2_val_batch = model(corners_withsemantics_t_val_batch, global_attn_matrix_val_batch, t_val, feat_32_val_batch, feat_16_val_batch)
                     output_corners_withsemantics1_val_batch, output_corners_withsemantics2_val_batch = model(corners_withsemantics_t_val_batch, global_attn_matrix_val_batch, t_val, feat_16_val_batch)
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     
                     
                     output_corners_withsemantics_val_batch = torch.cat(
@@ -670,9 +608,6 @@ while step < total_steps:
                             results_stage1_val['results_corners_numbers_' + str(current_step_val)].append(
                                 sample_from_posterior_normal_distribution_val_batch[i, :, 9:10][None, :, :].view(-1))  # 0: True, 1: False
 
-
-
-
         '''inverse normalize, remove padding and rasterization'''
         stage1_0_val = None
         for k_val in results_timesteps_stage1_val:
@@ -684,7 +619,7 @@ while step < total_steps:
 
         # print(stage1_0_val)
         '''stage 2'''
-        print('验证集二阶段开始')
+        print('The second phase of the validation set begins')
         # merge points (data loading in actual)
         corners_all_samples_val = stage1_0_val[0]
         semantics_all_samples_val = stage1_0_val[1]
@@ -771,8 +706,8 @@ while step < total_steps:
 
             output_dir_val = output_dir + 'val_' + f'{step:07d}' + '/'
             if os.path.exists(output_dir_val):
-                shutil.rmtree(output_dir_val)  # 删除路径
-            os.makedirs(output_dir_val)  # 创建路径
+                shutil.rmtree(output_dir_val)
+            os.makedirs(output_dir_val)
             for val_count in tqdm(range(len(dataset_val))):
                 corners_sample_i_val = corners_all_samples_val[val_count]
                 edges_sample_i_val = edges_all_samples_val[val_count]
@@ -786,7 +721,7 @@ while step < total_steps:
                 # print(semantics_sample_i_val)
 
                 ''' get planar cycles'''
-                # 形状为 (1, n, 14) 的 ndarray，包含 0 和 1;找到每个子数组中 1 所在的索引,用 99999 替换值为 0 的原始元素
+                # ndarray of shape (1, n, 14) containing 0s and 1s; find the index of each subarray where a 1 is located, and replace the original element with a value of 0 with 99999
                 semantics_sample_i_transform_val = semantics_sample_i_val
                 semantics_sample_i_transform_indices_val = np.indices(semantics_sample_i_transform_val.shape)[-1]
                 semantics_sample_i_transform_val = np.where(semantics_sample_i_transform_val == 1,
@@ -809,7 +744,6 @@ while step < total_steps:
                 # for scs in simple_cycles_semantics_val:
                 #     print(scs)
 
-                # 创建一个256x256的全白图片
                 img = np.ones((256, 256, 3), np.uint8) * 255
 
                 # draw
@@ -823,11 +757,10 @@ while step < total_steps:
                             cv2.rectangle(img, (p1[0] - 3, p1[1] - 3), (p1[0] + 3, p1[1] + 3), color=(150, 150, 150),
                                           thickness=-1)
                             p2 = (polygon[point_i + 1][0], polygon[point_i + 1][1])
-                            cv2.line(img, p1, p2, color=(150, 150, 150), thickness=5)  # 这个地方设成5输出的才是7个像素宽
+                            cv2.line(img, p1, p2, color=(150, 150, 150), thickness=5)  # If this place is set to 5, the output will be 7 pixels wide.
 
                 cv2.imwrite(os.path.join(output_dir_val, f"val_pred_{val_count}.png"), img)
 
-        print('验证集预测图渲染完毕')
         '''calculate FID, KID. '''
         current_Fid = fid(gt_dir_val, output_dir_val, fid_batch_size=128, fid_device=device)
         current_Kid = kid(gt_dir_val, output_dir_val, kid_batch_size=128, kid_device=device)
