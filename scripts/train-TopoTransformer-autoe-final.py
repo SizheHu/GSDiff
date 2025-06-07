@@ -1,17 +1,19 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff_topo-main')
-sys.path.append('/home/user00/HSZ/gsdiff_topo-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff_topo-main/gsdiff_topo')
+sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
 
-
+'''This is the second script for training a Transformer as a topological graph autoencoder, 
+based on a model pre-trained with random graphs, 
+fine-tuned on the extracted RPLAN data.'''
 
 import math
 import torch
 from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 from datasets.rplang_bubble_diagram_57_15 import RPlanGBubbleDiagram
-from gsdiff_topo.bubble_diagram_57_9 import *
-from gsdiff_topo.utils import *
+from gsdiff.bubble_diagram_57_9 import *
+from gsdiff.utils import *
 from itertools import cycle
 
 
@@ -19,26 +21,11 @@ lr = 1e-4
 weight_decay = 0
 total_steps = float("inf") # 200000
 batch_size = 256
-device = 'cuda:3'
+device = 'cuda:0' # Modify it yourself
 
 '''create output_dir'''
-output_dir = 'outputs/structure-57-16-temp/'
+output_dir = 'outputs/structure-57-16/'
 os.makedirs(output_dir, exist_ok=False)
-'''record description'''
-description = '''
-训练用于气泡图节点嵌入和角点数估计的CVAE（一阶段之前的第0阶段）中的图嵌入网络。
-我们在2024年8月1日重新训练，层数加到24层，维数从512降为256
-57-10 回到12层 去掉权重衰减
-57-11 bs=8
-57-12 bs=2048
-57-13 bs=2048 层数加到24层
-57-14 13的SGD版本
-57-15 已经使用随机数据预训练过了，加载57-14验证集最优版本，在真正的训练集微调，bs=256
-57-16 13 adam 的微调版本
-'''
-file_description = open(output_dir + 'file_description.txt', mode='w')
-file_description.write(description)
-file_description.close()
 
 '''Neural Network'''
 model_path = 'outputs/structure-57-13/model011000.pt'
@@ -58,7 +45,6 @@ dataloader_val_iter = iter(cycle(dataloader_val))
 
 '''Optim'''
 optimizer = AdamW(list(model.parameters()), lr=lr, weight_decay=weight_decay)
-# optimizer = SGD(list(model.parameters()), lr=lr, momentum=0.9)
 '''Training'''
 step = 0
 loss_curve = []
@@ -136,7 +122,7 @@ while step < total_steps:
     '''loss backward'''
     loss_batch.backward()
     '''clip norm, if False, training long steps may diverge'''
-    torch.nn.utils.clip_grad_norm(model.parameters(), max_norm=1)
+    torch.nn.utils.clip_grad_norm(model.parameters(), max_norm=1) # 0.1 maybe also good?
     '''update params'''
     optimizer.step()
     '''step += 1'''
@@ -170,7 +156,6 @@ while step < total_steps:
     if step % interval == 0:
         model.eval()
         val_number = len(dataset_val) # 3000
-        # 这些指标都采用Acc来算：所有样本中，有多少分类正确的。
         SN = 0
         ST = 0
         EN = 0
