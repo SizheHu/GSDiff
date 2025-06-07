@@ -293,11 +293,9 @@ for batch_count in tqdm(range(batch_numbers)):
 # '''Neural Network'''
 # pretrained_encoder = BoundaryModel().to(device)
 # pretrained_encoder.load_state_dict(torch.load('outputs/structure-78-12/model_stage0_best_006700.pt', map_location=device))
-# print('预训练边界CNN参数量：', sum(p.numel() for p in pretrained_encoder.parameters()))
-# # 冻结预训练嵌入网络参数
+# print('Pre-trained boundary CNN parameters：', sum(p.numel() for p in pretrained_encoder.parameters()))
 # for param in pretrained_encoder.parameters():
 #     param.requires_grad = False
-# print('已冻结边界CNN')
 '''In order to save GPU memory during training, we ran the dataset with the trained CNN in advance and saved the 64*64, 32*32, and 16*16 three-level feature maps.
 In this way, we can directly load the dataset.'''
 
@@ -425,7 +423,7 @@ while step < total_steps:
     x_coords_uns = x_coords.unsqueeze(2)
     distance_matrix_x = torch.abs(x_coords_uns - x_coords_uns.transpose(1, 2))
 
-    # 计算 y 坐标的 L1 距离方阵
+    # Compute the L1 distance matrix of the y-coordinate
     y_coords_uns = y_coords.unsqueeze(2)
     distance_matrix_y = torch.abs(y_coords_uns - y_coords_uns.transpose(1, 2))
 
