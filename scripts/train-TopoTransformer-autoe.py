@@ -1,17 +1,17 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff_topo-main')
-sys.path.append('/home/user00/HSZ/gsdiff_topo-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff_topo-main/gsdiff_topo')
+sys.path.append('/home/user00/HSZ/gsdiff-main')
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
 
-
+'''This is the first script to train a Transformer as a topological graph autoencoder, pre-train with random graphs.'''
 
 import math
 import torch
 from torch.optim import AdamW, SGD
 from torch.utils.data import DataLoader
 from datasets.rplang_bubble_diagram import RPlanGBubbleDiagram
-from gsdiff_topo.bubble_diagram_57_9 import *
-from gsdiff_topo.utils import *
+from gsdiff.bubble_diagram_57_9 import *
+from gsdiff.utils import *
 from itertools import cycle
 
 
@@ -19,23 +19,12 @@ lr = 1e-4
 weight_decay = 0
 total_steps = float("inf") # 200000
 batch_size = 2048
-device = 'cuda:2'
+device = 'cuda:0'
 
 '''create output_dir'''
 output_dir = 'outputs/structure-57-13/'
 os.makedirs(output_dir, exist_ok=False)
-'''record description'''
-description = '''
-训练用于气泡图节点嵌入和角点数估计的CVAE（一阶段之前的第0阶段）中的图嵌入网络。
-我们在2024年8月1日重新训练，层数加到24层，维数从512降为256
-57-10 回到12层 去掉权重衰减
-57-11 bs=8
-57-12 bs=2048
-57-13 bs=2048 层数加到24层
-'''
-file_description = open(output_dir + 'file_description.txt', mode='w')
-file_description.write(description)
-file_description.close()
+
 
 '''Neural Network'''
 model = TopoGraphModel().to(device)
@@ -131,7 +120,7 @@ while step < total_steps:
     '''loss backward'''
     loss_batch.backward()
     '''clip norm, if False, training long steps may diverge'''
-    torch.nn.utils.clip_grad_norm(model.parameters(), max_norm=1)
+    torch.nn.utils.clip_grad_norm(model.parameters(), max_norm=1) # 0.1 maybe also good?
     '''update params'''
     optimizer.step()
     '''step += 1'''
@@ -165,7 +154,6 @@ while step < total_steps:
     if step % interval == 0:
         model.eval()
         val_number = len(dataset_val) # 3000
-        # 这些指标都采用Acc来算：所有样本中，有多少分类正确的。
         SN = 0
         ST = 0
         EN = 0
