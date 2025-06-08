@@ -1,8 +1,8 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff-main')
-sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
-sys.path.append('/home/user00/HSZ/gsdiff-main/scripts/metrics')
+sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
+sys.path.append('/home/user00/HSZ/gsdiff-main/scripts/metrics') # Modify it yourself
 
 
 import math
@@ -20,6 +20,7 @@ import torch.nn.functional as F
 from scripts.metrics.fid import fid
 from scripts.metrics.kid import kid
 
+'''This is the script for training the first stage node generation model under unconstrained conditions'''
 
 diffusion_steps = 1000
 lr = 1e-4
@@ -27,7 +28,7 @@ weight_decay = 0
 total_steps = 1000000
 batch_size = 256 # 256
 batch_size_val = 3000 
-device = 'cuda:0'
+device = 'cuda:0' # Modify it yourself
 merge_points = False
 clamp_trick_training = True
 
@@ -36,23 +37,29 @@ def map_to_binary(tensor):
     batch_size, n_values = tensor.shape
     binary_tensor = torch.zeros((batch_size, n_values, 12), dtype=torch.float32, device=tensor.device)
 
+    # Create a mask to mark values ​​other than 99999
     mask = tensor != 99999
 
+    # Processing values ​​other than 99999
     valid_values = torch.where(mask, tensor, torch.zeros_like(tensor))
 
+    # Separate integer and fractional parts
     integer_part = valid_values.floor().to(torch.int32)
     fractional_part = valid_values - integer_part
 
+    # Processing the integer part
     for i in range(8):
         binary_tensor[:, :, 7 - i] = integer_part % 2
         integer_part //= 2
 
+    # Processing decimals
     fractional_part *= 16
     fractional_part = fractional_part.floor().to(torch.int32)
     for i in range(4):
         binary_tensor[:, :, 11 - i] = fractional_part % 2
         fractional_part //= 2
 
+    # Use mask to ensure that the original 99999 value is 0 in the binary vector
     binary_tensor = torch.where(mask.unsqueeze(-1), binary_tensor, torch.zeros_like(binary_tensor))
 
     return binary_tensor
@@ -61,23 +68,29 @@ def map_to_fournary(tensor):
     batch_size, n_values = tensor.shape
     fournary_tensor = torch.zeros((batch_size, n_values, 6), dtype=torch.float32, device=tensor.device)
 
+    # Create a mask to mark values ​​other than 99999
     mask = tensor != 99999
 
+    # Processing values ​​other than 99999
     valid_values = torch.where(mask, tensor, torch.zeros_like(tensor))
 
+    # Separate integer and fractional parts
     integer_part = valid_values.floor().to(torch.int32)
     fractional_part = valid_values - integer_part
 
+    # Processing the integer part
     for i in range(4):
         fournary_tensor[:, :, 3 - i] = integer_part % 4
         integer_part //= 4
 
+    # Processing decimals
     fractional_part *= 16
     fractional_part = fractional_part.floor().to(torch.int32)
     for i in range(2):
         fournary_tensor[:, :, 5 - i] = fractional_part % 4
         fractional_part //= 4
 
+    # Use mask to ensure that the original 99999 value is 0
     fournary_tensor = torch.where(mask.unsqueeze(-1), fournary_tensor, torch.zeros_like(fournary_tensor))
 
     return fournary_tensor
@@ -86,23 +99,29 @@ def map_to_eightnary(tensor):
     batch_size, n_values = tensor.shape
     eightnary_tensor = torch.zeros((batch_size, n_values, 5), dtype=torch.float32, device=tensor.device)
 
+    # Create a mask to mark values ​​other than 99999
     mask = tensor != 99999
 
+    # Processing values ​​other than 99999
     valid_values = torch.where(mask, tensor, torch.zeros_like(tensor))
 
+    # Separate integer and fractional parts
     integer_part = valid_values.floor().to(torch.int32)
     fractional_part = valid_values - integer_part
 
+    # Processing the integer part
     for i in range(3):
         eightnary_tensor[:, :, 2 - i] = integer_part % 8
         integer_part //= 8
 
+    # Processing decimals
     fractional_part *= 64
     fractional_part = fractional_part.floor().to(torch.int32)
     for i in range(2):
         eightnary_tensor[:, :, 4 - i] = fractional_part % 8
         fractional_part //= 8
 
+    # Use mask to ensure that the original 99999 value is 0
     eightnary_tensor = torch.where(mask.unsqueeze(-1), eightnary_tensor, torch.zeros_like(eightnary_tensor))
 
     return eightnary_tensor
@@ -111,27 +130,34 @@ def map_to_sxtnary(tensor):
     batch_size, n_values = tensor.shape
     sxtnary_tensor = torch.zeros((batch_size, n_values, 3), dtype=torch.float32, device=tensor.device)
 
+    # Create a mask to mark values ​​other than 99999
     mask = tensor != 99999
 
+    # Processing values ​​other than 99999
     valid_values = torch.where(mask, tensor, torch.zeros_like(tensor))
 
+    # Separate integer and fractional parts
     integer_part = valid_values.floor().to(torch.int32)
     fractional_part = valid_values - integer_part
 
+    # Processing the integer part
     for i in range(2):
         sxtnary_tensor[:, :, 1 - i] = integer_part % 16
         integer_part //= 16
 
+    # Processing decimals
     fractional_part *= 16
     fractional_part = fractional_part.floor().to(torch.int32)
     for i in range(1):
         sxtnary_tensor[:, :, 2 - i] = fractional_part % 16
         fractional_part //= 16
 
+    # Use mask to ensure that the original 99999 value is 0
     sxtnary_tensor = torch.where(mask.unsqueeze(-1), sxtnary_tensor, torch.zeros_like(sxtnary_tensor))
 
     return sxtnary_tensor
 
+# # Example
 # tensor = torch.tensor([[178.297378618747245675, 99999], [128.5, 64.177]], dtype=torch.float32)
 # tensor = map_to_sxtnary(tensor)
 # print(tensor)
@@ -191,7 +217,7 @@ dataloader_val_for_gt_rendering = DataLoader(dataset_val_for_gt_rendering, batch
                         drop_last=False, pin_memory=True)  # try different num_workers to be faster
 dataloader_val_iter_for_gt_rendering = iter(cycle(dataloader_val_for_gt_rendering))
 
-
+'''In order to calculate FID and KID on the validation set, the validation set needs to be rendered first.'''
 gt_dir_val = output_dir + 'val_gt' + '/'
 if os.path.exists(gt_dir_val):
     shutil.rmtree(gt_dir_val)
@@ -673,11 +699,11 @@ while step < total_steps:
                             cv2.rectangle(img, (p1[0] - 3, p1[1] - 3), (p1[0] + 3, p1[1] + 3), color=(150, 150, 150),
                                           thickness=-1)
                             p2 = (polygon[point_i + 1][0], polygon[point_i + 1][1])
-                            cv2.line(img, p1, p2, color=(150, 150, 150), thickness=5)  # 这个地方设成5输出的才是7个像素宽
+                            cv2.line(img, p1, p2, color=(150, 150, 150), thickness=5)  # If this place is set to 5, the output will be 7 pixels wide.
 
                 cv2.imwrite(os.path.join(output_dir_val, f"val_pred_{val_count}.png"), img)
 
-        print('验证集预测图渲染完毕')
+
         '''calculate FID, KID. '''
         current_Fid = fid(gt_dir_val, output_dir_val, fid_batch_size=128, fid_device=device)
         current_Kid = kid(gt_dir_val, output_dir_val, kid_batch_size=128, kid_device=device)
