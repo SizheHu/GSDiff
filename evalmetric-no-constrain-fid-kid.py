@@ -1,7 +1,10 @@
 import os
 import numpy as np
 
-'''This is used to calculate the FID and KID (located in 'test_metrics.npy') calculated from the results of any inference under any constraints'''
+'''This is used to calculate the FID and KID (located in 'test_metrics.npy') calculated from the results of any inference under any constraints
+
+For 'test_metrics.npy' (FID and KID values), the output of the test script for unconstrained generation is already included in 'test_metrics.npy'.
+Our topology constraint generated 757 samples (numbered in evalmetric-topoconstrain-ged-roomnumber.py) and repeated the experiment 5 times.'''
 
 # Initialize a dictionary to store all FID and KID values
 metrics_dict = {}
