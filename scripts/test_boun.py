@@ -561,7 +561,9 @@ for model_path_CDDPM in model_path_CDDPMs:
                 # img = img.resize((512, 512), Image.ANTIALIAS)
                 img.save(os.path.join(output_dir_test, f"test_pred_{test_count}.png"))
 
-        '''calculate FID, KID. '''
+        '''calculate FID, KID. 
+        This rendering method is different, is in the validation set, and generates a different number of samples, which is not the reported result in the paper. 
+        The reported result in the paper is obtained by taking the 378 samples that overlap with WallPlan and Graph2Plan and calculating them once in the test script.'''
         current_Fid = fid(gt_dir_test, output_dir_test, fid_batch_size=128, fid_device=device)
         current_Kid = kid(gt_dir_test, output_dir_test, kid_batch_size=128, kid_device=device)
         print(model_path_CDDPM, 'FID: ', current_Fid, 'KID: ', current_Kid)
