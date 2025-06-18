@@ -39,7 +39,7 @@ Alternatively, you can use `get_cycle_basis_and_semantic_3_semansimplified` inst
 The test scripts for no constraints, topology constraints, and boundary constraints are all placed under `scripts` (test_xxx.py). 
 Download the corresponding weights and run them via:
    ```bash
-   python test_xxx.py.
+   python test_xxx.py
    ```
 
 No constraints: We use the original 3000 results and run them 5 times to get the average.
