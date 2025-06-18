@@ -35,6 +35,23 @@ Note, when we conducted our experiments, the semantics of bubble diagram GT invo
 Alternatively, you can use `get_cycle_basis_and_semantic_3_semansimplified` instead of `get_cycle_basis_and_semantic_2_semansimplified` in `rplan-process8/9/10.py` to extract room semantics and train your own topology models. This method is not random, may yield improvements over the metrics reported in the paper.
 
 
+# Usage
+The test scripts for no constraints, topology constraints, and boundary constraints are all placed under `scripts` (test_xxx.py). 
+Download the corresponding weights and run them via:
+   ```bash
+   python test_xxx.py.
+   ```
+
+No constraints: We use the original 3000 results and run them 5 times to get the average.
+
+Topology constraints: We took the intersection of the original 3000 results with the test set numbers of HouseDiffusion and House-GAN++, and got 757. 
+We ran them 5 times and averaged them to get the FID, KID, GED, and statistical analysis of each room type. 
+The sample numbers of 757 are in line 183 of `evalmetric-topoconstrain-ged-roomnumber.py`.
+
+Boundary constraints: We took the intersection of the original 3000 results with the test set numbers of HouseDiffusion and House-GAN++, and got 378. 
+We got the FID, KID, GED, and statistical analysis of each room type. 
+The sample number of 378 is on line 9 of `evalmetric-boun-constrain-fid-kid.py`.
+
 
 # params (place in the 'outputs' folder)
 unconstrained params: https://drive.google.com/file/d/15gM0GtW2GwHmlpz0r-rpvo-k-BlNy_gu/view?usp=sharing
