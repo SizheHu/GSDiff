@@ -49,7 +49,7 @@ We ran them 5 times and averaged them to get the FID, KID, GED, and statistical 
 The sample numbers of 757 are in line 183 of `evalmetric-topoconstrain-ged-roomnumber.py`.
 
 Boundary constraints: We took the intersection of the original 3000 results with the test set numbers of HouseDiffusion and House-GAN++, and got 378. 
-We got the FID, KID, GED, and statistical analysis of each room type. 
+We ran them 5 times and averaged them to get the FID, KID, GED, and statistical analysis of each room type. 
 The sample number of 378 is on line 9 of `evalmetric-boun-constrain-fid-kid.py`.
 
 
