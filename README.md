@@ -31,6 +31,11 @@ Official implementation of the AAAI 2025 paper: "GSDiff: Synthesizing Vector Flo
    ```
    - After completion, a `rplang-v3-bubble-diagram` folder will be created under `datasets/rplandata/Data`, containing the same number of files.
 
+6. Move data from `datasets/rplandata/Data` to `datasets` for train/val/testing:
+   ```bash
+   python move.py
+   ```
+
 Note, when we conducted our experiments, the semantics of bubble diagram GT involved randomness. Due to the terms of the RPLAN dataset, we are not permitted to release any part of it. Therefore, the bubble diagram GT semantics extracted using the provided scripts may differ slightly from our experimental results. However, given the large data scale, the bias should be minor (for rooms with ambiguous categories, both our GT and the GT you extract randomly select one category, which is no statistically significant difference).
 Alternatively, you can use `get_cycle_basis_and_semantic_3_semansimplified` instead of `get_cycle_basis_and_semantic_2_semansimplified` in `rplan-process8/9/10.py` to extract room semantics and train your own topology models. This method is not random, may yield improvements over the metrics reported in the paper.
 
