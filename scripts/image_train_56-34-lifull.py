@@ -1,8 +1,8 @@
 import sys
 
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/gsdiff')
+sys.path.append('/home/user00/HSZ/gsdiff-main')
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
 
 import math
 import torch
