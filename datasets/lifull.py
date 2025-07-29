@@ -93,7 +93,6 @@ class lifull(Dataset):
 
         for image_id in integrated_data.keys():
             integrated_data[image_id].pop('annotations', None)
-        # print(self.maxn) 47，我们可以还用之前的53偷个懒
         # 整合 npy 数据
         for image_id in integrated_data.keys():
             npy_path = os.path.join(npy_dir, f"{image_id}.npy")
