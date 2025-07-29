@@ -1,8 +1,8 @@
 import sys
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/gsdiff')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/scripts/metrics')
+sys.path.append('/home/user00/HSZ/gsdiff-main')
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
+sys.path.append('/home/user00/HSZ/gsdiff-main/scripts/metrics')
 
 
 import math
@@ -363,7 +363,6 @@ while step < total_steps:
     # corners_loss_masked2 = (corners_withsemantics_target2 - pred_xstart_cs) ** 2
 
     # 局部/全局 对齐/重叠 的时间权重，batch(bs, 53, 2+7+1)内每个样本相同。t=0权重接近1，t=1000权重接近0
-    # LACE原文写的是1-alphas_cumprod，写错了
     time_weight = torch.tensor(betas.tolist()[::-1], dtype=torch.float64, device=device)
     # 我们先求出局部对齐的loss，再乘以时间权重
     # print(pred_xstart_cs)
