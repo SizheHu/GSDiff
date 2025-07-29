@@ -3,10 +3,10 @@ import sys
 import cv2
 from PIL import Image, ImageDraw
 
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/datasets')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/gsdiff')
-sys.path.append('/home/user00/HSZ/gsdiff-main-lifull/scripts/metrics')
+sys.path.append('/home/user00/HSZ/gsdiff-main')
+sys.path.append('/home/user00/HSZ/gsdiff-main/datasets')
+sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff')
+sys.path.append('/home/user00/HSZ/gsdiff-main/scripts/metrics')
 
 
 
@@ -38,8 +38,7 @@ resolution = 512
 
 
 '''create output_dir'''
-# output_dir = 'test_outputs/A-48-lifull-1/'
-output_dir = 'test_outputs/A-48-lifull-temp/'
+output_dir = 'test_outputs/A-48-lifull-1/'
 os.makedirs(output_dir, exist_ok=True)
 
 '''Diffusion Settings'''
