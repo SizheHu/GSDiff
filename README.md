@@ -39,6 +39,10 @@ Official implementation of the AAAI 2025 paper: "GSDiff: Synthesizing Vector Flo
 Note, when we conducted our experiments, the semantics of bubble diagram GT involved randomness. Due to the terms of the RPLAN dataset, we are not permitted to release any part of it. Therefore, the bubble diagram GT semantics extracted using the provided scripts may differ slightly from our experimental results. However, given the large data scale, the bias should be minor (for rooms with ambiguous categories, both our GT and the GT you extract randomly select one category, which is no statistically significant difference).
 Alternatively, you can use `get_cycle_basis_and_semantic_3_semansimplified` instead of `get_cycle_basis_and_semantic_2_semansimplified` in `rplan-process8/9/10.py` to extract room semantics and train your own topology models. This method is not random, may yield improvements over the metrics reported in the paper.
 
+--------------------------LIFULL---------------------------------------
+If you want to try training/generating on the LIFULL dataset, please create path `datasets/lifulldata` and follow the data request process of Raster-to-Graph (https://github.com/SizheHu/Raster-to-Graph) to place the data under this path `datasets/lifulldata`. 
+The data contains 10,804 images (Step 1: Access the "LIFULL HOME'S Data") and corresponding annotations (Step 2: Access the Annotations).
+
 
 # Usage
 The test scripts for no constraints, topology constraints, and boundary constraints are all placed under `scripts` (test_xxx.py). 
@@ -57,6 +61,10 @@ Boundary constraints: We took the intersection of the original 3000 results with
 We ran them 5 times and averaged them to get the FID, KID, GED, and statistical analysis of each room type. 
 The sample number of 378 is on line 9 of `evalmetric-boun-constrain-fid-kid.py`.
 
+--------------------------LIFULL---------------------------------------
+All training and testing scripts on LIFULL dataset have 'lifull' in the file names. 
+Like RPLAN dataset, the purpose of each script is stated at the top of the script.
+
 
 # params (place in the 'outputs' folder)
 unconstrained params: https://drive.google.com/file/d/15gM0GtW2GwHmlpz0r-rpvo-k-BlNy_gu/view?usp=sharing
@@ -69,3 +77,7 @@ boundary-autoencoder CNN params: https://drive.google.com/file/d/1l6QRpfX5Jtucg3
 
 topology-autoencoder Transformer params: https://drive.google.com/file/d/1tExX8LdrFpJfBQH5y2emC6BltBwf9tHx/view?usp=sharing
 
+--------------------------LIFULL---------------------------------------
+Training parameters on the LIFULL dataset: 
+Node: https://drive.google.com/file/d/1k_q9-vQXbs3PDzLxvz-tQRvO3j0DzlPN/view?usp=sharing
+Edge: https://drive.google.com/file/d/1XkoMZAMOeBPTteUTVDukgc4BNoEEJSXS/view?usp=sharing
