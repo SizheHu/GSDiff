@@ -40,7 +40,9 @@ Note, when we conducted our experiments, the semantics of bubble diagram GT invo
 Alternatively, you can use `get_cycle_basis_and_semantic_3_semansimplified` instead of `get_cycle_basis_and_semantic_2_semansimplified` in `rplan-process8/9/10.py` to extract room semantics and train your own topology models. This method is not random, may yield improvements over the metrics reported in the paper.
 
 --------------------------LIFULL---------------------------------------
+
 If you want to try training/generating on the LIFULL dataset, please create path `datasets/lifulldata` and follow the data request process of Raster-to-Graph (https://github.com/SizheHu/Raster-to-Graph) to place the data under this path `datasets/lifulldata`. 
+
 The data contains 10,804 images (Step 1: Access the "LIFULL HOME'S Data") and corresponding annotations (Step 2: Access the Annotations).
 
 
@@ -62,7 +64,9 @@ We ran them 5 times and averaged them to get the FID, KID, GED, and statistical 
 The sample number of 378 is on line 9 of `evalmetric-boun-constrain-fid-kid.py`.
 
 --------------------------LIFULL---------------------------------------
+
 All training and testing scripts on LIFULL dataset have 'lifull' in the file names. 
+
 Like RPLAN dataset, the purpose of each script is stated at the top of the script.
 
 
@@ -78,6 +82,9 @@ boundary-autoencoder CNN params: https://drive.google.com/file/d/1l6QRpfX5Jtucg3
 topology-autoencoder Transformer params: https://drive.google.com/file/d/1tExX8LdrFpJfBQH5y2emC6BltBwf9tHx/view?usp=sharing
 
 --------------------------LIFULL---------------------------------------
+
 Training parameters on the LIFULL dataset: 
+
 Node: https://drive.google.com/file/d/1k_q9-vQXbs3PDzLxvz-tQRvO3j0DzlPN/view?usp=sharing
+
 Edge: https://drive.google.com/file/d/1XkoMZAMOeBPTteUTVDukgc4BNoEEJSXS/view?usp=sharing
