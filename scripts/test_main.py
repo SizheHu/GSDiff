@@ -3,10 +3,10 @@ import sys
 import cv2
 from PIL import Image, ImageDraw
 
-sys.path.append('/home/user00/HSZ/gsdiff-main') # Modify it yourself
-sys.path.append('/home/user00/HSZ/gsdiff-main/datasets') # Modify it yourself
-sys.path.append('/home/user00/HSZ/gsdiff-main/gsdiff') # Modify it yourself
-sys.path.append('/home/user00/HSZ/gsdiff-main/scripts/metrics') # Modify it yourself
+sys.path.append('/mnt/persist/workspace') # Modified for current workspace
+sys.path.append('/mnt/persist/workspace/datasets') # Modified for current workspace
+sys.path.append('/mnt/persist/workspace/gsdiff') # Modified for current workspace
+sys.path.append('/mnt/persist/workspace/scripts/metrics') # Modified for current workspace
 
 
 import math
@@ -26,8 +26,8 @@ from scripts.metrics.kid import kid
 
 
 diffusion_steps = 1000
-batch_size_test = 3000
-device = 'cuda:0'
+batch_size_test = 10  # Reduced for testing without full dataset
+device = 'cpu'  # Changed to CPU since CUDA not available
 merge_points = False # True?
 align_points = False # True?
 aa_scale = 1
